@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<body>
+<h1>6 aus 49</h1>
+    Zahlen:
+    {{#lottoNumbers}}
+        <span>{{.}}</span>
+    {{/lottoNumbers}}
+Superzahl:
+    {{additionalNumber}}
+
+<form method="get" action="/">
+    <button type="submit">neu</button>
+</form>
+
+</body>
+</html>
