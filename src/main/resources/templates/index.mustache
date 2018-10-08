@@ -1,13 +1,18 @@
 <!doctype html>
 <html lang="en">
 <body>
-<h1>6 aus 49</h1>
-    Zahlen:
-    {{#lottoNumbers}}
-        <span>{{.}}</span>
-    {{/lottoNumbers}}
-Superzahl:
-    {{additionalNumber}}
+<h1>Eurokackpot 4 Tickets</h1>
+    {{#euroJackpotTickets}}
+        Zahlen:
+        {{#numbers}}
+            <span>{{.}}</span>
+        {{/numbers}}
+        Eurozahlen:
+        {{#additionalNumbers}}
+            <span>{{.}}</span>
+        {{/additionalNumbers}}
+        <br>
+    {{/euroJackpotTickets}}
 
 <form method="get" action="/">
     <button type="submit">neu</button>

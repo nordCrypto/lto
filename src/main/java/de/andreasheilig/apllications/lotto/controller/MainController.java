@@ -1,50 +1,41 @@
 package de.andreasheilig.apllications.lotto.controller;
 
+import de.andreasheilig.apllications.lotto.Repository.EuroJackpotTicket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Andreas Heilig
  * Date: 28.09.2018
  */
-@Controller
-public class MainController {
+@Controller public class MainController {
 
-    private final Random generator = new Random();
 
-    @GetMapping("/")
-    public String getMainPage(final Model model) {
-        model.addAttribute("lottoNumbers", generateLottoNumbers());
-        model.addAttribute("additionalNumber", generateAdditionalNumber());
+
+    @GetMapping("/ej") public String getMainPage(final Model model) {
+        model.addAttribute("euroJackpotTickets", generateEuroJackpotTicketListOf(4));
         return "index";
     }
 
-    private int generateAdditionalNumber() {
-        int additionalNumber = 0;
-        while (additionalNumber == 0) {
-            int generatedNumber = generator.nextInt(10);
-            if (generatedNumber != 0) {
-                additionalNumber = generatedNumber;
+    private List<EuroJackpotTicket> generateEuroJackpotTicketListOf(int count) {
+        List<EuroJackpotTicket> ticketList = new ArrayList<>();
+        while (ticketList.size() < count) {
+            EuroJackpotTicket generatedTicked = new EuroJackpotTicket();
+            if (ticketNumbersNotEqual(ticketList, generatedTicked) && additionalNumbersNotEqual(ticketList, generatedTicked)) {
+                ticketList.add(generatedTicked);
             }
         }
-        return additionalNumber;
+        return ticketList;
     }
 
-    private List<Integer> generateLottoNumbers() {
-        List<Integer> sixNumbers = new ArrayList<>();
-        while (sixNumbers.size() < 6) {
-            int number = generator.nextInt(50);
-            if (number != 0 && sixNumbers.stream().noneMatch(n -> n.equals(number))) {
-                sixNumbers.add(number);
-            }
-        }
-        sixNumbers.sort(Comparator.naturalOrder());
-        return sixNumbers;
+    private boolean additionalNumbersNotEqual(List<EuroJackpotTicket> ticketList, EuroJackpotTicket generatedTicked) {
+        return ticketList.stream().noneMatch(t -> t.getAdditionalNumbers().stream().anyMatch(a -> generatedTicked.getAdditionalNumbers().contains(a)));
+    }
+
+    private boolean ticketNumbersNotEqual(List<EuroJackpotTicket> ticketList, EuroJackpotTicket generatedTicked) {
+        return ticketList.stream().noneMatch(t -> t.getNumbers().stream().anyMatch(n -> generatedTicked.getNumbers().contains(n)));
     }
 }
